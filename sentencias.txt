@@ -1,0 +1,55 @@
+Sentencias
+
+1. Agregar un producto al carrito de compras
+INSERT INTO carrito (id_carrito, id_libro)
+VALUES ([id,carrito], [id_libro]);
+// se agrega el id del libro que se quiere agregar y el id del carrito al cual se quiere insertar, luego con el comando INSERT INTO se agrega al carrito //
+
+2. Eliminar un producto del carrito de compras
+DELETE from carrito
+WHERE id_carrito = [id_carrito] AND id_libro = [id_libro]
+
+// en id_carrito e id_libro se ingresan los id del libro que se quiere eliminar y el id del carrito del cual se quiere eliminar el producto, luego con el comando delete se elimina //
+
+3.Mostrar todos los productos del carrito
+SELECT *
+FROM carrito
+WHERE id_carrito = [id_carrito]
+// del id_carrito seleccionado mostramos todos lo que esté dentro del carrito id_carrito //
+
+4. Precio total a pagar en el carrito
+SELECT sum(precio) AS precio_total
+FROM carrito
+JOIN Libro ON carrito.id_libro = libro.id_libro
+WHERE carrito.id_carrito = [id_carrito]
+
+// del carrito.id_carrito se crea una union entre el id_libro e id_carrito,, luego seleccionamos el precio de cada uno de los libros dentro del carrito y los sumamos para mostrar el precio total //
+
+Promedio de libros publicado por autor
+SELECT autor.nombre_autor, AVG(contar_libros) AS promedio_libros
+FROM autor
+JOIN (
+SELECT id_autor, COUNT (*) AS contar_libros
+	   FROM libro
+	   GROUP BY autor
+) AS LibrosPorAutor ON autor.id_autor = LibrosPorAutor.id_autor
+GROUP BY autor.nombre_autor;
+
+// se realiza la unión de las tablas autor y número de libros por autor del subconjunto “contar_libros” que agrupa los libros publicados por id_autor con el nombre LibrosPorAutor.
+de los libros contados, se calcula el promedio con AVG y se muestra el promedio de libros según el nombre del autor //
+
+
+Mostrar ranking de los libros que más personas tienen como favorito:
+SELECT * 
+FROM libro
+ORDER BY libro.cantidad_favorito DESC
+//Desde la tabla libro, recolectamos la informacion del atributo cantidad_favorito y se ordenan de forma descendente la cantidad de veces que un usuario le ha dado a favorito a un libro en específico. //
+
+Mostrar lo libros favoritos de un usuario:
+SELECT l.Nombre_libro *
+FROM  Usuario_Libro_Favorito lf, Libro l.
+WHERE lf.id_libro_favorito=l.id_libro
+
+//De las tablas usuario_libro_favorito y libro, buscamos los id de libros que sean iguales a los de la tabla intermedia con los libros favoritos. Luego, mostramos los nombres de los libros del usuario. //
+
+

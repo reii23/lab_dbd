@@ -1,0 +1,149 @@
+CREATE TABLE Continente
+(
+	id_continente int primary key,
+	continente varchar(18)
+);
+
+CREATE TABLE Ubicacion_Geografica 
+(
+	id_ubicacion int primary key,
+	pais varchar(56),
+	id_continente_u int,
+	foreign key(id_continente_u) references Continente(id_continente)
+);
+
+CREATE TABLE Usuario 
+(
+	id_usuario int primary key,
+	nombre_usuario varchar(20),
+	contraseña varchar(16),
+	fecha_nacimiento date,
+	mail varchar(35),
+	id_ubicacion_usuario int,
+	foreign key(id_ubicacion_usuario) references Ubicacion_Geografica(id_ubicacion)	
+);
+
+CREATE TABLE Restriccion
+(
+	id_restriccion int primary key,
+	edad int
+);
+
+CREATE TABLE Libro
+(
+	id_libro int primary key,
+	autor varchar(20),
+	nombre_libro varchar(50),
+	precio int,
+	stock_libro int,
+	cantidad_ventas int,
+	valoracion_media real,
+	cantidad_favorito int,
+	id_ubicacion_libro int,
+	id_restriccion_libro int,
+	foreign key(id_ubicacion_libro) references Ubicacion_Geografica(id_ubicacion),
+	foreign key(id_restriccion_libro) references Restriccion(id_restriccion)
+);
+
+CREATE TABLE Rol
+(
+	id_rol int primary key,
+	nombre_rol varchar(13)
+);
+
+CREATE TABLE Biblioteca
+(
+	id_biblioteca int primary key,
+	id_usuario_B int,
+	id_libro_B int,
+	visualizacion bool,
+	foreign key(id_usuario_B) references Usuario(id_usuario),
+	foreign key(id_libro_B) references Libro(id_libro)
+);
+
+CREATE TABLE Libro_Favorito
+(
+	id_libro_favorito int primary key,
+	id_usuario_f int,
+	id_libro_f int,
+	foreign key(id_usuario_f) references Usuario(id_usuario),
+	foreign key(id_libro_f) references Libro(id_libro)
+);
+
+CREATE TABLE Carrito
+(
+	id_carrito int primary key,
+	monto_total int,
+	cantidad_producto int,
+	carrito_comprado bool
+);
+
+CREATE TABLE Reseña
+(
+	id_reseña int primary key,
+	comentario_reseña varchar(100),
+	valoracion int,
+	id_usuarioR int,
+	id_librore int,
+	foreign key(id_usuarioR) references Usuario(id_usuario),
+	foreign key(id_librore) references Libro(id_libro)
+);
+
+CREATE TABLE Medio_Pago
+(
+	id_medio_pago int primary key,
+	medio_pago varchar(10)
+);
+
+
+CREATE TABLE Transaccion
+(
+	id_transaccion int primary key,
+	fecha_boleta date,
+	id_pago int,
+	id_carro int,
+	foreign key(id_pago) references Medio_Pago(id_medio_pago),
+	foreign key(id_carro) references Carrito(id_carrito)
+);
+
+CREATE TABLE Categoria
+(
+	id_categoria int primary key,
+	categoria varchar(15)
+);
+
+CREATE TABLE Categoria_Libro
+(
+	id_categoria_libro int primary key,
+	id_libro_cl int,
+	id_categoria_cl int,
+	foreign key(id_libro_cl) references Libro(id_libro),
+	foreign key(id_categoria_cl) references Categoria(id_categoria)
+);
+
+CREATE TABLE Usuario_Carrito
+(
+	id_usuario_carrito int primary key,
+	id_usuario_uc int,
+	id_carrito_uc int,
+	foreign key(id_usuario_uc) references Usuario(id_usuario),
+	foreign key(id_carrito_uc) references Carrito(id_carrito)
+);
+
+CREATE TABLE Usuario_Rol
+(
+	id_usuario_rol int primary key,
+	id_usuario_ur int,
+	id_rol_ur int,
+	foreign key(id_usuario_ur) references Usuario(id_usuario),
+	foreign key(id_rol_ur) references Rol(id_rol)
+);
+
+CREATE TABLE Libro_carrito
+(
+	id_libro_carrito int primary key,
+	id_libro_lc int,
+	id_carrito_lc int,
+	foreign key(id_libro_lc) references Libro(id_libro),
+	foreign key(id_carrito_lc) references Carrito(id_carrito)
+);
